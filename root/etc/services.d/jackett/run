@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
-if [ -z ${AUTO_UPDATE+x} ] || [ "${AUTO_UPDATE}" == "true" ]; then
-	COMMAND="/app/Jackett/jackett_launcher.sh"
+if [ $JACKETT_NO_UPDATES -eq 1 ]; then
+  UPDATE="--NoUpdates"
 else
-	COMMAND="/app/Jackett/jackett --NoUpdates"
+  UPDATE=""
 fi
 
 exec \
-	s6-setuidgid abc ${COMMAND} ${RUN_OPTS}
+	s6-setuidgid abc mono /app/Jackett/JackettConsole.exe $UPDATE "${RUN_OPTS}"
